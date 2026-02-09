@@ -1,15 +1,17 @@
 import Modules from "../modules/page";
 import CourseStatus from "./status";
+
 export default function Home() {
- return (
-   <div id="wd-home">
-     <table>
-       <tbody>
-         <tr>
-           <td valign="top" width="70%"> <Modules />      </td>
-           <td valign="top">             <CourseStatus /> </td>
-         </tr>
-       </tbody>
-     </table>
-   </div>
-);}
+  return (
+    <div id="wd-home" className="d-flex">
+      <div className="flex-fill me-3">
+        <Modules />
+      </div>
+
+      {/* Course Status hides on smaller screens */}
+      <div className="d-none d-xl-block">
+        <CourseStatus />
+      </div>
+    </div>
+  );
+}
