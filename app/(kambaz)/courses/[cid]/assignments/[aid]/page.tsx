@@ -1,8 +1,7 @@
 "use client";
-import { use } from "react";
+
 import Link from "next/link";
 import {
-  Button,
   Col,
   Form,
   FormCheck,
@@ -12,35 +11,52 @@ import {
   FormSelect,
   Row,
 } from "react-bootstrap";
+import { useParams } from "next/navigation";
+import * as db from "../../../../database";
 
-export default function EditAssignment({
-  params,
-}: {
-  params: Promise<{ cid: string; aid: string }>;
-}) {
-  const { cid, aid } = use(params);
+type Assignment = {
+  _id: string;
+  title: string;
+  course: string;
+  description?: string;
+  points?: number;
+  due?: string;       
+  available?: string; 
+  until?: string;     
+};
+
+export default function EditAssignment() {
+  const { cid, aid } = useParams();
+
+  const assignments = db.assignments as Assignment[];
+  const assignment = assignments.find(
+    (a) => a.course === cid && a._id === aid
+  );
 
   return (
     <div id="wd-assignment-editor" className="pb-5">
-      {/* Breadcrumb-ish line (simple + works with your existing course header) */}
       <div className="text-muted mb-3">
         <span className="me-2">Assignments</span>
         <span className="me-2">›</span>
-        <span className="text-dark">{aid}</span>
+        <span className="text-dark">{assignment?.title ?? String(aid)}</span>
       </div>
 
-      {/* Centered form column like the screenshot */}
       <div className="mx-auto" style={{ maxWidth: 720 }}>
         <Form>
           {/* Assignment Name */}
           <FormGroup className="mb-3">
             <FormLabel>Assignment Name</FormLabel>
-            <FormControl defaultValue={aid} />
+            <FormControl defaultValue={assignment?.title ?? String(aid)} />
           </FormGroup>
 
           {/* Description */}
           <FormGroup className="mb-3">
-            <FormControl as="textarea" rows={8} defaultValue={`The assignment is available online
+            <FormControl
+              as="textarea"
+              rows={8}
+              defaultValue={
+                assignment?.description ??
+                `The assignment is available online
 
 Submit a link to the landing page of your Web application running on Netlify.
 
@@ -50,7 +66,9 @@ The landing page should include the following:
 • Link to the Kambaz application
 • Links to all relevant source code repositories
 
-The Kambaz application should include a link to navigate back to the landing page.`} />
+The Kambaz application should include a link to navigate back to the landing page.`
+              }
+            />
           </FormGroup>
 
           {/* Points */}
@@ -59,7 +77,7 @@ The Kambaz application should include a link to navigate back to the landing pag
               <FormLabel className="m-0">Points</FormLabel>
             </Col>
             <Col xs={8}>
-              <FormControl type="number" defaultValue={100} />
+              <FormControl type="number" defaultValue={assignment?.points ?? 100} />
             </Col>
           </Row>
 
@@ -123,7 +141,7 @@ The Kambaz application should include a link to navigate back to the landing pag
             </Col>
           </Row>
 
-          {/* Assign To (simple version) */}
+          {/* Assign section with Due + Available */}
           <Row className="mb-3">
             <Col xs={4} className="text-end">
               <FormLabel className="m-0">Assign</FormLabel>
@@ -134,16 +152,26 @@ The Kambaz application should include a link to navigate back to the landing pag
                 <FormControl defaultValue="Everyone" className="mb-3" />
 
                 <FormLabel className="fw-semibold">Due</FormLabel>
-                <FormControl type="datetime-local" className="mb-3" />
+                <FormControl
+                  type="datetime-local"
+                  className="mb-3"
+                  defaultValue={assignment?.due ?? ""}
+                />
 
                 <Row>
                   <Col>
                     <FormLabel className="fw-semibold">Available from</FormLabel>
-                    <FormControl type="datetime-local" />
+                    <FormControl
+                      type="datetime-local"
+                      defaultValue={assignment?.available ?? ""}
+                    />
                   </Col>
                   <Col>
                     <FormLabel className="fw-semibold">Until</FormLabel>
-                    <FormControl type="datetime-local" />
+                    <FormControl
+                      type="datetime-local"
+                      defaultValue={assignment?.until ?? ""}
+                    />
                   </Col>
                 </Row>
               </div>

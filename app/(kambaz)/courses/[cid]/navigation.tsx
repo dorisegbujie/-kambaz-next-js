@@ -1,61 +1,56 @@
+"use client";
+
 import Link from "next/link";
+import { useParams, usePathname } from "next/navigation";
+
 export default function CourseNavigation() {
+  const { cid } = useParams();
+  const pathname = usePathname();
+
+  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
+
   return (
-<div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
-      <Link
-        href="/courses/1234/home"
-        id="wd-course-home-link"
-        className="list-group-item active border-0"
-      >
-        Home
-      </Link>
+    <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
+      {links.map((link) => {
+        const path =
+          link === "Home"
+            ? `/courses/${cid}/home`
+            : link === "People"
+            ? `/courses/${cid}/people/table`
+            : `/courses/${cid}/${link.toLowerCase()}`;
 
-      <Link
-        href="/courses/1234/modules"
-        id="wd-course-modules-link"
-        className="list-group-item text-danger border-0"
-      >
-        Modules
-      </Link>
+        const active = pathname === path;
 
-      <Link
-        href="/courses/1234/piazza"
-        id="wd-course-piazza-link"
-        className="list-group-item text-danger border-0"
-      >
-        Piazza
-      </Link>
+        const id =
+          link === "Home"
+            ? "wd-course-home-link"
+            : link === "Modules"
+            ? "wd-course-modules-link"
+            : link === "Piazza"
+            ? "wd-course-piazza-link"
+            : link === "Zoom"
+            ? "wd-course-zoom-link"
+            : link === "Assignments"
+            ? "wd-course-assignments-link"
+            : link === "Quizzes"
+            ? "wd-course-quizzes-link"
+            : link === "Grades"
+            ? "wd-course-grades-link"
+            : "wd-course-people-link";
 
-      <Link
-        href="/courses/1234/zoom"
-        id="wd-course-zoom-link"
-        className="list-group-item text-danger border-0"
-      >
-        Zoom
-      </Link>
-
-      <Link
-        href="/courses/1234/assignments"
-        id="wd-course-assignments-link"
-        className="list-group-item text-danger border-0"
-      >
-        Assignments
-      </Link>
-
-      <Link
-        href="/courses/1234/quizzes"
-        id="wd-course-quizzes-link"
-        className="list-group-item text-danger border-0"
-      >
-        Quizzes
-      </Link>
-
-      <Link
-        href="/courses/1234/people/table"
-        id="wd-course-people-link"
-        className="list-group-item text-danger border-0"
-      >
-        People
-      </Link>
+        return (
+          <Link
+            key={link}
+            href={path}
+            id={id}
+            className={`list-group-item border-0 ${
+              active ? "active" : "text-danger"
+            }`}
+          >
+            {link}
+          </Link>
+        );
+      })}
     </div>
-  );}
+  );
+}
