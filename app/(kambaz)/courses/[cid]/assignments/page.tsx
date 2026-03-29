@@ -1,37 +1,33 @@
 "use client";
 
-import { use } from "react";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
-import { FaSearch, FaPlus, FaEllipsisV } from "react-icons/fa";
+import { Modal } from "react-bootstrap";
+import { FaSearch, FaPlus, FaEllipsisV, FaTrash } from "react-icons/fa";
 import { BsGripVertical } from "react-icons/bs";
 import { FaFileLines } from "react-icons/fa6";
 import GreenCheckmark from "../modules/GreenCheckmark";
-import * as db from "../../../database";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { deleteAssignment } from "../../assignments/reducer";
 
-type Assignment = {
-  _id: string;
-  title: string;
-  course: string;
-  available?: string;
-  due?: string;
-  points?: number;
-  description?: string;
-};
+export default function Assignments() {
+  const { cid } = useParams() as { cid: string };
+  const router = useRouter();
+  const dispatch = useAppDispatch();
 
-export default function Assignments({
-  params,
-}: {
-  params: Promise<{ cid: string }>;
-}) {
-  const { cid } = use(params);
-
-  const assignments = (db.assignments as Assignment[]).filter(
-    (a) => a.course === cid
+  const assignments = useAppSelector((state) =>
+    state.assignmentsReducer.assignments.filter((a) => a.course === cid)
   );
+  const currentUser = useAppSelector((state) => state.accountReducer.currentUser);
+  const isFaculty =
+    currentUser?.role === "FACULTY" || currentUser?.role === "ADMIN";
+
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   return (
     <div id="wd-assignments">
@@ -55,10 +51,17 @@ export default function Assignments({
             Group
           </Button>
 
-          <Button variant="danger" className="text-nowrap">
-            <FaPlus className="me-2" />
-            Assignment
-          </Button>
+          {isFaculty && (
+            <Button
+              variant="danger"
+              className="text-nowrap"
+              id="wd-add-assignment-btn"
+              onClick={() => router.push(`/courses/${cid}/assignments/new`)}
+            >
+              <FaPlus className="me-2" />
+              Assignment
+            </Button>
+          )}
         </div>
       </div>
 
@@ -107,11 +110,42 @@ export default function Assignments({
 
             <div className="d-flex align-items-center gap-3">
               <GreenCheckmark />
+              {isFaculty && (
+                <FaTrash
+                  className="text-danger mt-2"
+                  style={{ cursor: "pointer" }}
+                  id="wd-delete-assignment-btn"
+                  onClick={() => setDeleteId(a._id)}
+                />
+              )}
               <FaEllipsisV className="mt-2" />
             </div>
           </ListGroupItem>
         ))}
       </ListGroup>
+
+      {/* Delete confirmation dialog */}
+      <Modal show={deleteId !== null} onHide={() => setDeleteId(null)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Assignment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this assignment?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setDeleteId(null)}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            id="wd-confirm-delete-assignment-btn"
+            onClick={() => {
+              if (deleteId) dispatch(deleteAssignment(deleteId));
+              setDeleteId(null);
+            }}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

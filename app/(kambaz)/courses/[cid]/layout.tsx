@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import { useSelector } from "react-redux";
@@ -14,6 +14,7 @@ export default function CoursesLayout({
 }: Readonly<{ children: ReactNode }>) {
   const { cid } = useParams() as { cid: string };
   const router = useRouter();
+  const [showNav, setShowNav] = useState(true);
 
   const { courses } = useSelector((state: RootState) => state.coursesReducer);
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
@@ -35,15 +36,21 @@ export default function CoursesLayout({
   return (
     <div id="wd-courses">
       <h2 className="text-danger">
-        <FaAlignJustify className="me-4 fs-4 mb-1" />
+        <FaAlignJustify
+          className="me-4 fs-4 mb-1"
+          onClick={() => setShowNav((prev) => !prev)}
+          style={{ cursor: "pointer" }}
+        />
         {course?.name || `Course ${cid}`}
       </h2>
       <hr />
 
       <div className="d-flex">
-        <div className="d-none d-md-block">
-          <CourseNavigation />
-        </div>
+        {showNav && (
+          <div>
+            <CourseNavigation />
+          </div>
+        )}
         <div className="flex-fill">{children}</div>
       </div>
     </div>

@@ -3,7 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type User = {
   _id: string;
   username: string;
-  role: "STUDENT" | "TA" | "FACULTY" | "ADMIN";
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  dob?: string;
+  role: "USER" | "STUDENT" | "TA" | "FACULTY" | "ADMIN";
 };
 
 type AccountState = {

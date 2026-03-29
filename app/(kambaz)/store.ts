@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-
 import coursesReducer from "./courses/reducer";
 import accountReducer from "./account/reducer";
 import assignmentsReducer from "./courses/assignments/reducer";
 import enrollmentsReducer from "./enrollments/reducer";
+import modulesReducer from "./courses/[cid]/modules/reducer";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +11,7 @@ const store = configureStore({
     accountReducer,
     assignmentsReducer,
     enrollmentsReducer,
+    modulesReducer,
   },
 });
 
