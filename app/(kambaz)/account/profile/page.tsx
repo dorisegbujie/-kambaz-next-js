@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, FormControl, FormSelect } from "react-bootstrap";
-import { setCurrentUser, User } from "../reducer";
+import { setCurrentUser, signOut, User } from "../reducer";
 import { RootState } from "../../store";
+import * as client from "../client";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -24,9 +25,16 @@ export default function Profile() {
     }
   }, [currentUser, router]);
 
-  const signout = () => {
-    dispatch(setCurrentUser(null));
+  const signout = async () => {
+    await client.signout();
+    dispatch(signOut());
     router.push("/account/signin");
+  };
+
+  const update = async () => {
+    if (!profile) return;
+    const updated = await client.updateUser(profile);
+    dispatch(setCurrentUser(updated));
   };
 
   return (
@@ -99,6 +107,13 @@ export default function Profile() {
             <option value="FACULTY">Faculty</option>
             <option value="STUDENT">Student</option>
           </FormSelect>
+          <Button
+            onClick={update}
+            className="w-100 mb-2"
+            id="wd-update-btn"
+          >
+            Update
+          </Button>
           <Button
             onClick={signout}
             className="w-100 mb-2"

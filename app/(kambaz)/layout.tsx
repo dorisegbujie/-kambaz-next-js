@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { Provider } from "react-redux";
 import store from "./store";
 import KambazNavigation from "./navigation";
+import Session from "./account/Session";
 import "./styles.css";
 
 export default function KambazLayout({
@@ -11,14 +12,16 @@ export default function KambazLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <Provider store={store}>
-      <div id="wd-kambaz">
-        <div className="d-flex">
-          <div>
-            <KambazNavigation />
+      <Session>
+        <div id="wd-kambaz">
+          <div className="d-flex">
+            <div>
+              <KambazNavigation />
+            </div>
+            <div className="wd-main-content-offset p-3 flex-fill">{children}</div>
           </div>
-          <div className="wd-main-content-offset p-3 flex-fill">{children}</div>
         </div>
-      </div>
+      </Session>
     </Provider>
   );
 }

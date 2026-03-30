@@ -26,5 +26,20 @@ export default function TOC() {
           Lab 4
         </Nav.Link>
       </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={Link} href="/Labs/Lab5" id="wd-lab5-link">
+          Lab 5
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="https://github.com/dorisegbujie/kambaz-node-server-app.git" target="_blank" rel="noreferrer">
+          Node Server App GitHub
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="RENDER_URL_PLACEHOLDER" target="_blank" rel="noreferrer" id="wd-server-link">
+          Server
+        </Nav.Link>
+      </Nav.Item>
    </Nav>
  );}

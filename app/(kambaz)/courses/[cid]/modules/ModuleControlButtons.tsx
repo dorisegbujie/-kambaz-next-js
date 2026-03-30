@@ -8,23 +8,29 @@ export default function ModuleControlButtons({
   moduleId,
   deleteModule,
   editModule,
+  isFaculty,
 }: {
   moduleId: string;
   deleteModule: (moduleId: string) => void;
   editModule: (moduleId: string) => void;
+  isFaculty: boolean;
 }) {
   return (
     <div className="float-end">
-      <FaPencil
-        onClick={() => editModule(moduleId)}
-        className="text-primary me-3 mb-1"
-        style={{ cursor: "pointer" }}
-      />
-      <FaTrash
-        className="text-danger me-2 mb-1"
-        onClick={() => deleteModule(moduleId)}
-        style={{ cursor: "pointer" }}
-      />
+      {isFaculty && (
+        <>
+          <FaPencil
+            onClick={() => editModule(moduleId)}
+            className="text-primary me-3 mb-1"
+            style={{ cursor: "pointer" }}
+          />
+          <FaTrash
+            className="text-danger me-2 mb-1"
+            onClick={() => deleteModule(moduleId)}
+            style={{ cursor: "pointer" }}
+          />
+        </>
+      )}
       <GreenCheckmark />
       <BsPlus className="fs-4 me-2" />
       <IoEllipsisVertical className="fs-4" />

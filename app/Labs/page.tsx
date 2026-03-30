@@ -9,9 +9,18 @@ export default function labs() {
           href="https://github.com/dorisegbujie/-kambaz-next-js"
           target="_blank"
         >
-          GitHub Repository
+          Kambaz Next.js GitHub Repository
         </a>
       </p>
+     <p>
+       <a
+         id="wd-node-github"
+         href="https://github.com/dorisegbujie/kambaz-node-server-app.git"
+         target="_blank"
+       >
+         Node Server App GitHub Repository
+       </a>
+     </p>
      <h1>Labs</h1>
      <ul>
        <li>
@@ -29,6 +38,10 @@ export default function labs() {
        <li>
          <Link href="/Labs/Lab4" id="wd-lab4-link">
            Lab 4: Maintaining State in React Applications </Link>
+       </li>
+       <li>
+         <Link href="/Labs/Lab5" id="wd-lab5-link">
+           Lab 5: NodeJS and Express Web Services </Link>
        </li>
      </ul>
    </div>
