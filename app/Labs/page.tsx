@@ -21,6 +21,15 @@ export default function labs() {
          Node Server App GitHub Repository
        </a>
      </p>
+     <p>
+       <a
+         id="wd-server-link"
+         href="https://kambaz-node-server-app-olgs.onrender.com"
+         target="_blank"
+       >
+         Node Server App on Render
+       </a>
+     </p>
      <h1>Labs</h1>
      <ul>
        <li>

@@ -37,7 +37,7 @@ export default function TOC() {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link href="RENDER_URL_PLACEHOLDER" target="_blank" rel="noreferrer" id="wd-server-link">
+        <Nav.Link href="https://kambaz-node-server-app-olgs.onrender.com" target="_blank" rel="noreferrer" id="wd-server-link">
           Server
         </Nav.Link>
       </Nav.Item>
