@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { addAssignment, updateAssignment, type Assignment } from "../../../assignments/reducer";
+import { setAssignments, type Assignment } from "../../../assignments/reducer";
 import { Button, Col, Form, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap";
+import * as client from "../../../../courses/client";
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams() as { cid: string; aid: string };
@@ -31,25 +32,34 @@ export default function AssignmentEditor() {
     };
   });
 
+  useEffect(() => {
+    if (aid === "new") return;
+    if (existing) {
+      setAssignment(existing);
+    } else {
+      client.findAssignmentById(aid).then((data) => setAssignment(data));
+    }
+  }, [aid]);
+
   const back = () => router.push(`/courses/${cid}/assignments`);
 
-  const save = () => {
+  const save = async () => {
     if (!isFaculty) return back();
 
     if (aid === "new") {
-      dispatch(
-        addAssignment({
-          title: assignment.title || "New Assignment",
-          course: cid,
-          available: assignment.available,
-          due: assignment.due,
-          points: assignment.points,
-          description: assignment.description,
-        })
-      );
+      await client.createAssignment(cid, {
+        title: assignment.title || "New Assignment",
+        course: cid,
+        available: assignment.available,
+        due: assignment.due,
+        points: assignment.points,
+        description: assignment.description,
+      });
     } else {
-      dispatch(updateAssignment({ ...assignment, _id: aid, course: cid }));
+      await client.updateAssignment({ ...assignment, _id: aid, course: cid });
     }
+    const data = await client.findAssignmentsForCourse(cid);
+    dispatch(setAssignments(data));
     back();
   };
 

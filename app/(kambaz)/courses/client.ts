@@ -84,3 +84,38 @@ export const findUsersForCourse = async (courseId: string) => {
   );
   return data;
 };
+
+export const findAssignmentsForCourse = async (courseId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/courses/${courseId}/assignments`
+  );
+  return data;
+};
+
+export const createAssignment = async (courseId: string, assignment: object) => {
+  const { data } = await axiosWithCredentials.post(
+    `${REMOTE_SERVER}/api/courses/${courseId}/assignments`,
+    assignment
+  );
+  return data;
+};
+
+export const findAssignmentById = async (assignmentId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/assignments/${assignmentId}`
+  );
+  return data;
+};
+
+export const updateAssignment = async (assignment: { _id: string; [key: string]: unknown }) => {
+  await axiosWithCredentials.put(
+    `${REMOTE_SERVER}/api/assignments/${assignment._id}`,
+    assignment
+  );
+};
+
+export const deleteAssignment = async (assignmentId: string) => {
+  await axiosWithCredentials.delete(
+    `${REMOTE_SERVER}/api/assignments/${assignmentId}`
+  );
+};

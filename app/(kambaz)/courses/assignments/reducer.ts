@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import * as db from "../../database";
 
 export type Assignment = {
   _id: string;
@@ -16,21 +15,22 @@ type AssignmentsState = {
 };
 
 const initialState: AssignmentsState = {
-  assignments: (db.assignments as Assignment[]) || [],
+  assignments: [],
 };
 
 const assignmentsSlice = createSlice({
   name: "assignments",
   initialState,
   reducers: {
+    setAssignments: (state, action: PayloadAction<Assignment[]>) => {
+      state.assignments = action.payload;
+    },
     addAssignment: (state, action: PayloadAction<Omit<Assignment, "_id">>) => {
       state.assignments.push({ _id: Date.now().toString(), ...action.payload });
     },
-
     deleteAssignment: (state, action: PayloadAction<string>) => {
       state.assignments = state.assignments.filter((a) => a._id !== action.payload);
     },
-
     updateAssignment: (state, action: PayloadAction<Assignment>) => {
       state.assignments = state.assignments.map((a) =>
         a._id === action.payload._id ? action.payload : a
@@ -39,7 +39,7 @@ const assignmentsSlice = createSlice({
   },
 });
 
-export const { addAssignment, deleteAssignment, updateAssignment } =
+export const { setAssignments, addAssignment, deleteAssignment, updateAssignment } =
   assignmentsSlice.actions;
 
 export default assignmentsSlice.reducer;

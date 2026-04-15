@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -13,7 +13,8 @@ import { BsGripVertical } from "react-icons/bs";
 import { FaFileLines } from "react-icons/fa6";
 import GreenCheckmark from "../modules/GreenCheckmark";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { deleteAssignment } from "../../assignments/reducer";
+import { setAssignments } from "../../assignments/reducer";
+import * as client from "../../../courses/client";
 
 export default function Assignments() {
   const { cid } = useParams() as { cid: string };
@@ -28,6 +29,13 @@ export default function Assignments() {
     currentUser?.role === "FACULTY" || currentUser?.role === "ADMIN";
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const fetchAssignments = async () => {
+    const data = await client.findAssignmentsForCourse(cid);
+    dispatch(setAssignments(data));
+  };
+
+  useEffect(() => { fetchAssignments(); }, [cid]);
 
   return (
     <div id="wd-assignments">
@@ -137,8 +145,11 @@ export default function Assignments() {
           <Button
             variant="danger"
             id="wd-confirm-delete-assignment-btn"
-            onClick={() => {
-              if (deleteId) dispatch(deleteAssignment(deleteId));
+            onClick={async () => {
+              if (deleteId) {
+                await client.deleteAssignment(deleteId);
+                fetchAssignments();
+              }
               setDeleteId(null);
             }}
           >
