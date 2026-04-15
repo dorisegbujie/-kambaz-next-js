@@ -50,12 +50,12 @@ export default function Modules() {
   };
 
   const handleDeleteModule = async (moduleId: string) => {
-    await client.deleteModule(moduleId);
+    await client.deleteModule(cid as string, moduleId);
     fetchModules();
   };
 
   const handleUpdateModule = async (module: Module) => {
-    await client.updateModule({ ...module, _id: module._id });
+    await client.updateModule(cid as string, { ...module, _id: module._id });
     fetchModules();
   };
 

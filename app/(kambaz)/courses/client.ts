@@ -63,13 +63,17 @@ export const createModuleForCourse = async (courseId: string, module: object) =>
   return data;
 };
 
-export const deleteModule = async (moduleId: string) => {
-  await axiosWithCredentials.delete(`${REMOTE_SERVER}/api/modules/${moduleId}`);
+export const deleteModule = async (courseId: string, moduleId: string) => {
+  const { data } = await axiosWithCredentials.delete(
+    `${REMOTE_SERVER}/api/courses/${courseId}/modules/${moduleId}`
+  );
+  return data;
 };
 
-export const updateModule = async (module: { _id: string; [key: string]: unknown }) => {
-  await axiosWithCredentials.put(
-    `${REMOTE_SERVER}/api/modules/${module._id}`,
+export const updateModule = async (courseId: string, module: { _id: string; [key: string]: unknown }) => {
+  const { data } = await axiosWithCredentials.put(
+    `${REMOTE_SERVER}/api/courses/${courseId}/modules/${module._id}`,
     module
   );
+  return data;
 };
