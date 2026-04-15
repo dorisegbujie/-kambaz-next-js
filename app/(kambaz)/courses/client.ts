@@ -77,3 +77,10 @@ export const updateModule = async (courseId: string, module: { _id: string; [key
   );
   return data;
 };
+
+export const findUsersForCourse = async (courseId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/courses/${courseId}/users`
+  );
+  return data;
+};

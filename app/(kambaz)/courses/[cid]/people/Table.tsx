@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import { useParams } from "next/navigation";
-import * as client from "../../../account/client";
+import * as client from "../../../courses/client";
 import PeopleDetails from "./Details";
 
 type User = {
@@ -24,8 +24,8 @@ export default function PeopleTable() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const loadUsers = async () => {
-    const all = await client.findAllUsers();
-    setUsers(all);
+    const enrolled = await client.findUsersForCourse(cid as string);
+    setUsers(enrolled);
   };
 
   useEffect(() => {
