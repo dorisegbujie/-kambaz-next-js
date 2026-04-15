@@ -38,3 +38,41 @@ export const updateUser = async (user: { _id: string; [key: string]: unknown }) 
   );
   return data;
 };
+
+export const findAllUsers = async () => {
+  const { data } = await axiosWithCredentials.get(`${REMOTE_SERVER}/api/users`);
+  return data;
+};
+
+export const findUsersByRole = async (role: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/users?role=${role}`
+  );
+  return data;
+};
+
+export const findUsersByPartialName = async (name: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/users?name=${name}`
+  );
+  return data;
+};
+
+export const findUserById = async (userId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/users/${userId}`
+  );
+  return data;
+};
+
+export const createUser = async (user: object) => {
+  const { data } = await axiosWithCredentials.post(
+    `${REMOTE_SERVER}/api/users`,
+    user
+  );
+  return data;
+};
+
+export const deleteUser = async (userId: string) => {
+  await axiosWithCredentials.delete(`${REMOTE_SERVER}/api/users/${userId}`);
+};

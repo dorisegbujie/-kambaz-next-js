@@ -11,6 +11,9 @@ export default function AccountNavigation() {
   );
   const pathname = usePathname();
   const links = currentUser ? ["profile"] : ["signin", "signup"];
+  if (currentUser && currentUser.role === "ADMIN") {
+    links.push("users");
+  }
 
   const linkClass = (href: string) => {
     const active = pathname === `/account/${href}`;
