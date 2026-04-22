@@ -9,13 +9,14 @@ import PeopleDetails from "./Details";
 
 type User = {
   _id: string;
-  firstName: string;
-  lastName: string;
-  loginId: string;
-  section: string;
-  role: string;
-  lastActivity: string;
-  totalActivity: string;
+  firstName?: string;
+  lastName?: string;
+  loginId?: string;
+  section?: string;
+  role?: string;
+  lastActivity?: string;
+  totalActivity?: string;
+  [key: string]: unknown;
 };
 
 export default function PeopleTable() {
