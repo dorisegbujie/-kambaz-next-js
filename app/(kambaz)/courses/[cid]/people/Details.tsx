@@ -8,13 +8,13 @@ import * as client from "../../../account/client";
 
 type User = {
   _id: string;
-  firstName: string;
-  lastName: string;
-  loginId: string;
-  section: string;
-  role: string;
-  lastActivity: string;
-  totalActivity: string;
+  firstName?: string;
+  lastName?: string;
+  loginId?: string;
+  section?: string;
+  role?: string;
+  lastActivity?: string;
+  totalActivity?: string;
   [key: string]: unknown;
 };
 

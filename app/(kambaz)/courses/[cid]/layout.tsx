@@ -17,21 +17,16 @@ export default function CoursesLayout({
   const [showNav, setShowNav] = useState(true);
 
   const { courses } = useSelector((state: RootState) => state.coursesReducer);
-  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
-  const { enrollments } = useSelector((state: RootState) => state.enrollmentsReducer);
+  const { currentUser, sessionLoading } = useSelector((state: RootState) => state.accountReducer);
 
   const course = courses.find((c) => c._id === cid);
 
   useEffect(() => {
+    if (sessionLoading) return;
     if (!currentUser) {
       router.push("/account/signin");
-      return;
     }
-    const enrolled = enrollments.some(
-      (e) => e.user === currentUser._id && e.course === cid
-    );
-    if (!enrolled) router.push("/dashboard");
-  }, [cid, currentUser, enrollments, router]);
+  }, [cid, currentUser, sessionLoading, router]);
 
   return (
     <div id="wd-courses">

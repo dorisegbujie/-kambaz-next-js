@@ -13,10 +13,12 @@ export type User = {
 
 type AccountState = {
   currentUser: User | null;
+  sessionLoading: boolean;
 };
 
 const initialState: AccountState = {
   currentUser: null,
+  sessionLoading: true,
 };
 
 const accountSlice = createSlice({
@@ -26,11 +28,14 @@ const accountSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<User | null>) => {
       state.currentUser = action.payload;
     },
+    setSessionLoaded: (state) => {
+      state.sessionLoading = false;
+    },
     signOut: (state) => {
       state.currentUser = null;
     },
   },
 });
 
-export const { setCurrentUser, signOut } = accountSlice.actions;
+export const { setCurrentUser, setSessionLoaded, signOut } = accountSlice.actions;
 export default accountSlice.reducer;

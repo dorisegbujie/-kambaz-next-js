@@ -5,6 +5,7 @@ import { FaUserCircle, FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import * as client from "../client";
+import PeopleDetails from "../../courses/[cid]/people/Details";
 
 type User = {
   _id: string;
@@ -17,6 +18,7 @@ type User = {
   section?: string;
   lastActivity?: string;
   totalActivity?: string;
+  [key: string]: unknown;
 };
 
 export default function UsersScreen() {
@@ -24,6 +26,7 @@ export default function UsersScreen() {
   const [users, setUsers] = useState<User[]>([]);
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [newUser, setNewUser] = useState<Partial<User>>({
     username: "",
     password: "",
@@ -68,6 +71,13 @@ export default function UsersScreen() {
   return (
     <div id="wd-users-screen" className="p-3">
       <h2>Users</h2>
+
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      <PeopleDetails
+        selectedUser={selectedUser as any}
+        setSelectedUser={setSelectedUser as any}
+        reloadUsers={loadUsers}
+      />
 
       <div className="d-flex gap-2 mb-3">
         <input
@@ -156,7 +166,11 @@ export default function UsersScreen() {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user._id}>
+            <tr
+              key={user._id}
+              onClick={() => setSelectedUser(user)}
+              style={{ cursor: "pointer" }}
+            >
               <td>
                 <FaUserCircle className="text-secondary fs-3" />
               </td>
@@ -168,7 +182,7 @@ export default function UsersScreen() {
               <td>
                 <button
                   className="btn btn-danger btn-sm"
-                  onClick={() => handleDeleteUser(user._id)}
+                  onClick={(e) => { e.stopPropagation(); handleDeleteUser(user._id); }}
                 >
                   Delete
                 </button>
