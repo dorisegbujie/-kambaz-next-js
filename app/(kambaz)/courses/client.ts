@@ -119,3 +119,77 @@ export const deleteAssignment = async (assignmentId: string) => {
     `${REMOTE_SERVER}/api/assignments/${assignmentId}`
   );
 };
+
+export const findQuizzesForCourse = async (courseId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/courses/${courseId}/quizzes`
+  );
+  return data;
+};
+
+export const createQuiz = async (courseId: string, quiz: object) => {
+  const { data } = await axiosWithCredentials.post(
+    `${REMOTE_SERVER}/api/courses/${courseId}/quizzes`,
+    quiz
+  );
+  return data;
+};
+
+export const findQuizById = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/quizzes/${quizId}`
+  );
+  return data;
+};
+
+export const updateQuiz = async (quiz: { _id: string; [key: string]: unknown }) => {
+  const { data } = await axiosWithCredentials.put(
+    `${REMOTE_SERVER}/api/quizzes/${quiz._id}`,
+    quiz
+  );
+  return data;
+};
+
+export const deleteQuiz = async (quizId: string) => {
+  await axiosWithCredentials.delete(`${REMOTE_SERVER}/api/quizzes/${quizId}`);
+};
+
+export const publishQuiz = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.put(
+    `${REMOTE_SERVER}/api/quizzes/${quizId}/publish`
+  );
+  return data;
+};
+
+export const unpublishQuiz = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.put(
+    `${REMOTE_SERVER}/api/quizzes/${quizId}/unpublish`
+  );
+  return data;
+};
+
+export const getLatestAttempt = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/quizzes/${quizId}/attempt`
+  );
+  return data;
+};
+
+export const getAttemptCount = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${REMOTE_SERVER}/api/quizzes/${quizId}/attempt/count`
+  );
+  return data;
+};
+
+export const submitAttempt = async (
+  quizId: string,
+  courseId: string,
+  answers: { questionId: string; answer: unknown }[]
+) => {
+  const { data } = await axiosWithCredentials.post(
+    `${REMOTE_SERVER}/api/quizzes/${quizId}/attempt`,
+    { answers, courseId }
+  );
+  return data;
+};

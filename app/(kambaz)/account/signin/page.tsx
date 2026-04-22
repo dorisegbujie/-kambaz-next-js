@@ -24,7 +24,7 @@ export default function Signin() {
   };
 
   return (
-    <div id="wd-signin-screen" className="mt-3" style={{ maxWidth: 320 }}>
+    <div id="wd-signin-screen" className="mt-3" style={{ maxWidth: 360 }}>
       <h1>Signin</h1>
       <FormControl
         id="wd-username"
@@ -45,6 +45,21 @@ export default function Signin() {
       <Link id="wd-signup-link" href="/account/signup">
         Signup
       </Link>
+
+      <hr className="mt-4" />
+      <div className="text-muted small">
+        <p className="mb-1"><strong>Doris Egbujie</strong> &mdash; Section 1</p>
+        <p className="mb-1">
+          <a href="https://github.com/dorisegbujie/-kambaz-next-js" target="_blank" rel="noreferrer">
+            GitHub: kambaz-next-js (frontend)
+          </a>
+        </p>
+        <p className="mb-0">
+          <a href="https://github.com/dorisegbujie/kambaz-node-server-app" target="_blank" rel="noreferrer">
+            GitHub: kambaz-node-server-app (backend)
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
